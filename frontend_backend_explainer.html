@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>フロントとバックって何が違うの？</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --surface-0: #f1efe8;
+    --surface-1: #f7f6f3;
+    --surface-2: #ffffff;
+    --text-primary: #1a1a18;
+    --text-secondary: #5f5e5a;
+    --text-muted: #888780;
+    --border: rgba(0,0,0,0.10);
+    --border-strong: rgba(0,0,0,0.18);
+    --bg-accent: #e6f1fb;
+    --border-accent: #378add;
+    --text-accent: #185fa5;
+    --bg-success: #eaf3de;
+    --border-success: #639922;
+    --text-success: #3b6d11;
+    --bg-danger: #fcebeb;
+    --border-danger: #e24b4a;
+    --text-danger: #a32d2d;
+    --bg-warning: #faeeda;
+    --text-warning: #854f0b;
+    --fill-accent: #378add;
+    --fill-success: #639922;
+    --radius: 8px;
+    --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --font-mono: "SF Mono", "Fira Code", "Consolas", monospace;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --surface-0: #1a1a18;
+      --surface-1: #222220;
+      --surface-2: #2c2c2a;
+      --text-primary: #f1efe8;
+      --text-secondary: #b4b2a9;
+      --text-muted: #888780;
+      --border: rgba(255,255,255,0.10);
+      --border-strong: rgba(255,255,255,0.18);
+      --bg-accent: #042c53;
+      --border-accent: #378add;
+      --text-accent: #85b7eb;
+      --bg-success: #173404;
+      --border-success: #639922;
+      --text-success: #97c459;
+      --bg-danger: #501313;
+      --border-danger: #e24b4a;
+      --text-danger: #f09595;
+      --bg-warning: #412402;
+      --text-warning: #fac775;
+      --fill-accent: #378add;
+      --fill-success: #639922;
+    }
+  }
+
+  body {
+    font-family: var(--font-sans);
+    background: var(--surface-0);
+    color: var(--text-primary);
+    min-height: 100vh;
+    padding: 2rem 1rem;
+  }
+
+  .page {
+    max-width: 680px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 0.75rem;
+  }
+
+  .hero-title {
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-bottom: 0.4rem;
+  }
+
+  .hero-sub {
+    font-size: 15px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 2rem;
+  }
+
+  /* Restaurant analogy */
+  .restaurant {
+    display: grid;
+    grid-template-columns: 1fr 48px 1fr;
+    gap: 0;
+    margin-bottom: 2.5rem;
+    align-items: stretch;
+  }
+
+  .rest-card {
+    border: 0.5px solid var(--border);
+    border-radius: 12px;
+    padding: 1.25rem;
+    background: var(--surface-2);
+  }
+
+  .rest-card.front { border-color: var(--border-accent); }
+  .rest-card.back  { border-color: var(--border-success); }
+
+  .rest-icon {
+    font-size: 28px;
+    margin-bottom: 0.5rem;
+    display: block;
+  }
+
+  .rest-role {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 0.25rem;
+  }
+  .front .rest-role { color: var(--text-accent); }
+  .back  .rest-role { color: var(--text-success); }
+
+  .rest-name {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+  }
+
+  .rest-desc {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 0.75rem;
+  }
+
+  .rest-examples {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .example-chip {
+    font-size: 12px;
+    padding: 3px 8px;
+    border-radius: 6px;
+    display: inline-block;
+    width: fit-content;
+  }
+  .front .example-chip { background: var(--bg-accent); color: var(--text-accent); }
+  .back  .example-chip { background: var(--bg-success); color: var(--text-success); }
+
+  .arrow-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 0 4px;
+  }
+
+  .arrow-line {
+    width: 2px;
+    flex: 1;
+    background: var(--border-strong);
+    border-radius: 1px;
+  }
+
+  .arrow-label {
+    font-size: 10px;
+    color: var(--text-muted);
+    text-align: center;
+    line-height: 1.3;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    letter-spacing: 0.04em;
+    font-weight: 500;
+  }
+
+  /* Correction grid */
+  .correction-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 2.5rem;
+  }
+
+  .correction-row {
+    display: grid;
+    grid-template-columns: 1fr 32px 1fr;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .correction-cell {
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  .correction-cell.wrong {
+    background: var(--bg-danger);
+    color: var(--text-danger);
+    border: 0.5px solid var(--border-danger);
+    text-decoration: line-through;
+    opacity: 0.8;
+  }
+
+  .correction-cell.right {
+    background: var(--bg-success);
+    color: var(--text-success);
+    border: 0.5px solid var(--border-success);
+  }
+
+  .correction-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    font-size: 18px;
+  }
+
+  /* Flow */
+  .flow {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .flow-step {
+    display: flex;
+    gap: 0;
+  }
+
+  .flow-left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 36px;
+    flex-shrink: 0;
+  }
+
+  .flow-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 4px;
+  }
+
+  .flow-connector {
+    width: 2px;
+    flex: 1;
+    min-height: 16px;
+    background: var(--border-strong);
+    margin: 2px 0;
+  }
+
+  .flow-step:last-child .flow-connector { display: none; }
+
+  .flow-content {
+    padding-bottom: 1.25rem;
+    flex: 1;
+  }
+
+  .flow-who {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 2px;
+  }
+
+  .flow-action {
+    font-size: 14px;
+    color: var(--text-primary);
+    line-height: 1.5;
+  }
+
+  .flow-note {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+
+  /* Layer stack */
+  .layer-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    border: 0.5px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 2rem;
+  }
+
+  .layer {
+    padding: 1rem 1.25rem;
+    border-bottom: 0.5px solid var(--border);
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 1rem;
+    align-items: start;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+
+  .layer:last-child { border-bottom: none; }
+  .layer:hover { background: var(--surface-1); }
+  .layer.active { background: var(--surface-1); }
+
+  .layer-tag {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 2px;
+  }
+
+  .layer-name {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text-primary);
+  }
+
+  .layer-summary {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+
+  .layer-detail {
+    display: none;
+    margin-top: 0.75rem;
+    padding: 0.75rem;
+    background: var(--surface-2);
+    border: 0.5px solid var(--border);
+    border-radius: 8px;
+  }
+
+  .layer-detail.visible { display: block; }
+
+  .layer-detail p {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 0.5rem;
+  }
+
+  .layer-detail p:last-child { margin-bottom: 0; }
+
+  .code-block {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    background: var(--surface-0);
+    border: 0.5px solid var(--border);
+    border-radius: 6px;
+    padding: 0.75rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    white-space: pre;
+    overflow-x: auto;
+    margin-top: 0.5rem;
+  }
+
+  .highlight { color: var(--text-accent); font-weight: 500; }
+
+  .summary-box {
+    padding: 1rem 1.25rem;
+    border-radius: 12px;
+    background: var(--surface-1);
+    border: 0.5px solid var(--border);
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+  }
+
+  .divider {
+    height: 0.5px;
+    background: var(--border);
+    margin: 2rem 0;
+  }
+
+  @media (max-width: 520px) {
+    .restaurant {
+      grid-template-columns: 1fr;
+    }
+    .arrow-col {
+      flex-direction: row;
+      width: 100%;
+      height: 36px;
+    }
+    .arrow-line {
+      width: auto;
+      height: 2px;
+      flex: 1;
+    }
+    .arrow-label {
+      writing-mode: horizontal-tb;
+      transform: none;
+    }
+    .correction-row {
+      grid-template-columns: 1fr;
+    }
+    .correction-arrow { display: none; }
+    .layer {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <p class="section-label">基本のき</p>
+  <h1 class="hero-title">フロントとバックって何が違うの？</h1>
+  <p class="hero-sub">「表側」と「裏側」—— レストランに例えるとイメージしやすい。</p>
+
+  <div class="restaurant">
+    <div class="rest-card front">
+      <span class="rest-icon">🍽️</span>
+      <div class="rest-role">フロントエンド</div>
+      <div class="rest-name">ホールスタッフ</div>
+      <div class="rest-desc">お客さん（ユーザー）が直接見て・触れる部分。見た目と操作を担当する。</div>
+      <div class="rest-examples">
+        <span class="example-chip">ボタン・テキスト表示</span>
+        <span class="example-chip">画面の切り替え</span>
+        <span class="example-chip">入力フォーム</span>
+        <span class="example-chip">デザイン・レイアウト</span>
+      </div>
+    </div>
+
+    <div class="arrow-col">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">API</div>
+      <div class="arrow-line"></div>
+    </div>
+
+    <div class="rest-card back">
+      <span class="rest-icon">👨‍🍳</span>
+      <div class="rest-role">バックエンド</div>
+      <div class="rest-name">キッチン</div>
+      <div class="rest-desc">ユーザーには見えない裏側。データの処理・保存・取得を担当する。</div>
+      <div class="rest-examples">
+        <span class="example-chip">ログイン認証</span>
+        <span class="example-chip">データをDBに保存</span>
+        <span class="example-chip">AIへのリクエスト</span>
+        <span class="example-chip">パスワード照合</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <p class="section-label">よくある勘違い</p>
+  <h2 class="hero-title" style="font-size:18px; margin-bottom:0.4rem;">「ボタンを押したら画面が変わる」はどっちの仕事？</h2>
+  <p class="hero-sub">これ、実はフロントエンドの仕事。バックエンドは「データ」だけを扱う。</p>
+
+  <div class="correction-grid">
+    <div class="correction-row">
+      <div class="correction-cell wrong">ボタンを押したら画面が変わる → バックエンド</div>
+      <div class="correction-arrow">→</div>
+      <div class="correction-cell right">画面の変化・表示切替 → フロントエンドの仕事</div>
+    </div>
+    <div class="correction-row">
+      <div class="correction-cell wrong">FastAPI = フロントとバックをつなぐ橋</div>
+      <div class="correction-arrow">→</div>
+      <div class="correction-cell right">FastAPIはバックエンドそのもの。橋じゃなくてキッチン本体。</div>
+    </div>
+    <div class="correction-row">
+      <div class="correction-cell wrong">GeminiやClaudeが「自分たちのバックエンド」</div>
+      <div class="correction-arrow">→</div>
+      <div class="correction-cell right">外部サービス。FastAPIから呼び出す「別のお店のキッチン」。</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <p class="section-label">実際の処理の流れ</p>
+  <h2 class="hero-title" style="font-size:18px; margin-bottom:0.4rem;">ログインボタンを押したとき、何が起きてる？</h2>
+  <p class="hero-sub" style="margin-bottom:1.5rem;">フロントとバックがAPIを通じてやりとりする様子。</p>
+
+  <div class="flow">
+    <div class="flow-step">
+      <div class="flow-left">
+        <div class="flow-dot" style="background:var(--fill-accent)"></div>
+        <div class="flow-connector"></div>
+      </div>
+      <div class="flow-content">
+        <div class="flow-who" style="color:var(--text-accent)">フロントエンド（Next.js）</div>
+        <div class="flow-action">ユーザーがボタンを押す → 入力されたIDとパスワードを受け取る</div>
+        <div class="flow-note">画面の操作はすべてフロントが担当</div>
+      </div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-left">
+        <div class="flow-dot" style="background:var(--text-muted)"></div>
+        <div class="flow-connector"></div>
+      </div>
+      <div class="flow-content">
+        <div class="flow-who" style="color:var(--text-muted)">API通信</div>
+        <div class="flow-action">「このIDとパスワードで合ってる？」とバックに送る</div>
+        <div class="flow-note">これが「APIを通じたやりとり」</div>
+      </div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-left">
+        <div class="flow-dot" style="background:var(--fill-success)"></div>
+        <div class="flow-connector"></div>
+      </div>
+      <div class="flow-content">
+        <div class="flow-who" style="color:var(--text-success)">バックエンド（FastAPI）</div>
+        <div class="flow-action">DBを照合して「OK」か「NG」を返す</div>
+        <div class="flow-note">データ処理・保存・照合はバックが担当</div>
+      </div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-left">
+        <div class="flow-dot" style="background:var(--fill-accent)"></div>
+        <div class="flow-connector"></div>
+      </div>
+      <div class="flow-content">
+        <div class="flow-who" style="color:var(--text-accent)">フロントエンド（Next.js）</div>
+        <div class="flow-action">結果を受け取り、OKならホーム画面に切り替える</div>
+        <div class="flow-note">「画面を変える」最後の判断もフロントがやる</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <p class="section-label">言語とフレームワーク</p>
+  <h2 class="hero-title" style="font-size:18px; margin-bottom:0.4rem;">JavaScriptとNext.jsは何が違う？</h2>
+  <p class="hero-sub" style="margin-bottom:1.5rem;">各行をクリックすると詳しい説明が見られる。</p>
+
+  <div class="layer-stack">
+    <div class="layer" onclick="toggle(this, 'detail-js')">
+      <div class="layer-left">
+        <div class="layer-tag" style="color:var(--text-warning)">言語</div>
+        <div class="layer-name">JavaScript</div>
+      </div>
+      <div class="layer-right">
+        <div class="layer-summary">ブラウザが理解できる基本の言葉。これだけでもWebは作れる。</div>
+        <div class="layer-detail" id="detail-js">
+          <p>料理で言う「包丁・フライパン」。これ自体が道具であり、素材でもある。</p>
+          <p>素のJavaScriptだけで画面を作ると、こうなる：</p>
+          <div class="code-block">document.getElementById(<span class="highlight">'btn'</span>)
+  .addEventListener(<span class="highlight">'click'</span>, function() {
+    document.getElementById(<span class="highlight">'text'</span>)
+      .textContent = <span class="highlight">'押された'</span>
+    <span style="color:var(--text-muted)">// 画面の変化が増えるほどこれが増殖する…</span>
+})</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="layer" onclick="toggle(this, 'detail-react')">
+      <div class="layer-left">
+        <div class="layer-tag" style="color:var(--text-accent)">ライブラリ</div>
+        <div class="layer-name">React</div>
+      </div>
+      <div class="layer-right">
+        <div class="layer-summary">UI部品（コンポーネント）を作って使い回せる仕組み。JSで書かれてる。</div>
+        <div class="layer-detail" id="detail-react">
+          <p>「部品を一回定義して何度でも使う」という発想。レシピカードを100個表示するとき、定義は1回でいい。</p>
+          <div class="code-block"><span class="highlight">function</span> RecipeCard({ name, time }) {
+  return (
+    &lt;div&gt;
+      &lt;h2&gt;<span class="highlight">{name}</span>&lt;/h2&gt;
+      &lt;p&gt;<span class="highlight">{time}</span>分&lt;/p&gt;
+    &lt;/div&gt;
+  )
+}
+
+<span style="color:var(--text-muted)">// 使うときはこれだけ（何個でも）</span>
+&lt;RecipeCard name=<span class="highlight">"肉じゃが"</span> time={30} /&gt;</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="layer" onclick="toggle(this, 'detail-next')">
+      <div class="layer-left">
+        <div class="layer-tag" style="color:var(--text-success)">フレームワーク</div>
+        <div class="layer-name">Next.js</div>
+      </div>
+      <div class="layer-right">
+        <div class="layer-summary">Reactをベースに、よく使う機能を全部入れてくれた道具箱。</div>
+        <div class="layer-detail" id="detail-next">
+          <p>Reactだけだと自分で設定しないといけないことが多い。Next.jsはそれを最初から用意してくれてる。</p>
+          <div class="code-block"><span style="color:var(--text-muted)">// ページ遷移：フォルダ置くだけで自動対応</span>
+pages/
+  index.tsx      → /
+  recipes/
+    [id].tsx     → /recipes/123
+
+<span style="color:var(--text-muted)">// API通信の仕組みも込み</span>
+<span style="color:var(--text-muted)">// 表示速度の最適化も自動</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="summary-box">
+    <strong style="color:var(--text-primary); font-weight:500;">まとめると：</strong>
+    JavaScriptという言語だけでフロントは作れる。でも現実的な規模のアプリを作るには、その言語を使いやすくした道具（React・Next.js）が必要。言語が変わるわけじゃなくて、上に積み重なっていくイメージ。
+  </div>
+
+</div>
+
+<script>
+function toggle(layer, detailId) {
+  var detail = document.getElementById(detailId);
+  var isVisible = detail.classList.contains('visible');
+  document.querySelectorAll('.layer-detail').forEach(function(d) {
+    d.classList.remove('visible');
+  });
+  document.querySelectorAll('.layer').forEach(function(l) {
+    l.classList.remove('active');
+  });
+  if (!isVisible) {
+    detail.classList.add('visible');
+    layer.classList.add('active');
+  }
+}
+</script>
+</body>
+</html>

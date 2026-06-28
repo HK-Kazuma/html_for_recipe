@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GitHub基本操作ガイド</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1B2B4B;
+    --paper: #F7F5F0;
+    --orange: #E8622A;
+    --green: #2E9E6B;
+    --gray: #E8E4DC;
+    --gray-mid: #B8B2A8;
+    --blue-light: #D6E4F7;
+    --orange-light: #FDE8DF;
+    --green-light: #D4F0E4;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Inter', 'Noto Sans JP', sans-serif;
+    line-height: 1.6;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--ink);
+    padding: 64px 24px 56px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -60px; left: -60px;
+    width: 320px; height: 320px;
+    border-radius: 50%;
+    background: rgba(232,98,42,0.12);
+    pointer-events: none;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; right: -40px;
+    width: 260px; height: 260px;
+    border-radius: 50%;
+    background: rgba(46,158,107,0.10);
+    pointer-events: none;
+  }
+  .hero-eyebrow {
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    color: var(--orange);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(32px, 6vw, 56px);
+    font-weight: 800;
+    color: #fff;
+    line-height: 1.1;
+    margin-bottom: 20px;
+  }
+  .hero h1 span { color: var(--orange); }
+  .hero-sub {
+    color: rgba(255,255,255,0.55);
+    font-size: 15px;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  /* ── SECTION ── */
+  .section {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 64px 24px;
+  }
+  .section-label {
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--orange);
+    margin-bottom: 8px;
+  }
+  .section h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(22px, 4vw, 32px);
+    font-weight: 700;
+    margin-bottom: 32px;
+    color: var(--ink);
+  }
+
+  /* ── WHY CARD ── */
+  .why-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  @media(max-width:560px){ .why-grid { grid-template-columns: 1fr; } }
+  .why-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 28px 24px;
+    border: 1.5px solid var(--gray);
+    position: relative;
+    overflow: hidden;
+  }
+  .why-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 4px; height: 100%;
+    background: var(--orange);
+    border-radius: 4px 0 0 4px;
+  }
+  .why-card:nth-child(2)::before { background: var(--green); }
+  .why-icon { font-size: 32px; margin-bottom: 12px; }
+  .why-card h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .why-card p { font-size: 14px; color: #555; line-height: 1.7; }
+
+  /* ── DIVIDER ── */
+  .divider {
+    border: none;
+    border-top: 1.5px solid var(--gray);
+    max-width: 860px;
+    margin: 0 auto;
+  }
+
+  /* ── 路線図 MAP ── */
+  .map-section {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 64px 24px;
+  }
+  .map-wrap {
+    background: #fff;
+    border-radius: 16px;
+    border: 1.5px solid var(--gray);
+    padding: 40px 32px;
+    overflow-x: auto;
+  }
+  .map-diagram {
+    min-width: 620px;
+    position: relative;
+  }
+
+  /* 駅ブロック */
+  .stations {
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+    gap: 0;
+  }
+  .station {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .station-box {
+    background: var(--ink);
+    color: #fff;
+    border-radius: 12px;
+    padding: 20px 16px;
+    text-align: center;
+    width: 100%;
+    max-width: 200px;
+  }
+  .station-box.remote { background: var(--green); }
+  .station-emoji { font-size: 28px; margin-bottom: 8px; }
+  .station-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .station-desc { font-size: 11px; opacity: 0.75; line-height: 1.5; }
+
+  /* 線路と矢印 */
+  .track-area {
+    flex: 1.2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0 8px;
+    gap: 12px;
+    padding-top: 20px;
+  }
+  .track-line {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    gap: 6px;
+  }
+  .track-cmd {
+    background: var(--orange);
+    color: #fff;
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .track-cmd.pull { background: var(--green); }
+  .track-arrow {
+    flex: 1;
+    height: 2px;
+    background: var(--orange);
+    position: relative;
+  }
+  .track-arrow.pull { background: var(--green); }
+  .track-arrow::after {
+    content: '▶';
+    position: absolute;
+    right: -2px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 10px;
+    color: var(--orange);
+    line-height: 1;
+  }
+  .track-arrow.pull::after {
+    content: '◀';
+    left: -2px;
+    right: auto;
+    color: var(--green);
+  }
+
+  /* ── 操作カード ── */
+  .ops-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 0;
+  }
+  @media(max-width:600px){ .ops-grid { grid-template-columns: 1fr; } }
+  .op-card {
+    background: #fff;
+    border-radius: 12px;
+    border: 1.5px solid var(--gray);
+    padding: 24px 20px;
+    position: relative;
+  }
+  .op-number {
+    position: absolute;
+    top: -14px;
+    left: 20px;
+    background: var(--ink);
+    color: #fff;
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 12px;
+    border-radius: 20px;
+  }
+  .op-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+    margin-top: 6px;
+  }
+  .op-icon { font-size: 26px; }
+  .op-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+  }
+  .op-direction {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--gray);
+    border-radius: 8px;
+    padding: 8px 12px;
+    margin-bottom: 12px;
+    font-size: 13px;
+    font-weight: 500;
+  }
+  .op-direction .from { color: var(--ink); font-weight: 600; }
+  .op-direction .arrow { color: var(--orange); font-weight: 700; }
+  .op-direction .to { color: var(--green); font-weight: 600; }
+  .op-desc { font-size: 14px; color: #555; line-height: 1.7; margin-bottom: 12px; }
+  .op-code {
+    background: var(--ink);
+    color: #7EC8A0;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    line-height: 1.6;
+  }
+  .op-code .comment { color: rgba(255,255,255,0.35); }
+
+  /* branch card special */
+  .op-card.branch-card { grid-column: span 2; }
+  @media(max-width:600px){ .op-card.branch-card { grid-column: span 1; } }
+  .branch-visual {
+    display: flex;
+    align-items: flex-start;
+    gap: 0;
+    margin: 16px 0;
+    overflow-x: auto;
+    padding-bottom: 4px;
+  }
+  .bv-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
+  }
+  .bv-node {
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    background: var(--gray-mid);
+    border: 2px solid var(--ink);
+    z-index: 1;
+  }
+  .bv-node.main { background: var(--ink); }
+  .bv-node.feature { background: var(--orange); border-color: var(--orange); }
+  .bv-node.merge { background: var(--green); border-color: var(--green); }
+  .bv-line-h {
+    width: 40px; height: 3px;
+    background: var(--ink);
+    margin-top: 8px;
+    flex-shrink: 0;
+  }
+  .bv-line-h.feature-line { background: var(--orange); }
+  .bv-line-h.merge-line { background: var(--green); }
+  .bv-line-v {
+    width: 3px;
+    height: 28px;
+    margin: 0;
+  }
+  .bv-line-v.main-v { background: var(--ink); }
+  .bv-line-v.feature-v { background: var(--orange); }
+  .bv-spacer { height: 28px; }
+  .bv-label {
+    font-size: 10px;
+    font-weight: 600;
+    margin-top: 4px;
+    white-space: nowrap;
+    color: var(--ink);
+  }
+  .bv-label.orange { color: var(--orange); }
+  .bv-label.green { color: var(--green); }
+
+  /* branch inline diagram */
+  .branch-inline {
+    background: var(--gray);
+    border-radius: 10px;
+    padding: 20px 16px;
+    margin: 12px 0;
+    overflow-x: auto;
+  }
+  .branch-track {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin-bottom: 6px;
+  }
+  .bt-dot {
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .bt-dot.main-c { background: var(--ink); }
+  .bt-dot.feat-c { background: var(--orange); }
+  .bt-dot.merge-c { background: var(--green); }
+  .bt-seg {
+    height: 3px;
+    flex: 1;
+    min-width: 30px;
+  }
+  .bt-seg.main-s { background: var(--ink); }
+  .bt-seg.feat-s { background: var(--orange); }
+  .bt-seg.merge-s { background: var(--green); }
+  .bt-label {
+    font-size: 11px;
+    font-weight: 600;
+    margin-left: 8px;
+    white-space: nowrap;
+    color: var(--ink);
+  }
+  .bt-label.o { color: var(--orange); }
+  .bt-label.g { color: var(--green); }
+
+  /* merge-fork visual */
+  .fork-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin: 12px 0;
+  }
+
+  /* ── FLOW SECTION ── */
+  .flow-section {
+    background: var(--ink);
+    padding: 64px 24px;
+  }
+  .flow-inner {
+    max-width: 860px;
+    margin: 0 auto;
+  }
+  .flow-inner .section-label { color: var(--orange); }
+  .flow-inner h2 { color: #fff; margin-bottom: 32px; }
+  .flow-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .flow-step {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+  }
+  .flow-left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
+    width: 40px;
+  }
+  .flow-num {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: var(--orange);
+    color: #fff;
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .flow-connector {
+    width: 2px;
+    flex: 1;
+    min-height: 32px;
+    background: rgba(255,255,255,0.15);
+    margin: 4px 0;
+  }
+  .flow-body {
+    padding-bottom: 32px;
+    flex: 1;
+  }
+  .flow-cmd {
+    display: inline-block;
+    background: rgba(255,255,255,0.1);
+    color: #7EC8A0;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    padding: 3px 10px;
+    border-radius: 6px;
+    margin-bottom: 6px;
+  }
+  .flow-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 4px;
+  }
+  .flow-desc {
+    font-size: 14px;
+    color: rgba(255,255,255,0.55);
+    line-height: 1.7;
+  }
+
+  /* ── TIPS ── */
+  .tips-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+    margin-top: 8px;
+  }
+  @media(max-width:640px){ .tips-grid { grid-template-columns: 1fr; } }
+  .tip-card {
+    background: var(--orange-light);
+    border-radius: 12px;
+    padding: 20px 18px;
+    border: 1.5px solid rgba(232,98,42,0.2);
+  }
+  .tip-card:nth-child(2) { background: var(--green-light); border-color: rgba(46,158,107,0.2); }
+  .tip-card:nth-child(3) { background: var(--blue-light); border-color: rgba(27,43,75,0.15); }
+  .tip-icon { font-size: 24px; margin-bottom: 10px; }
+  .tip-card h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .tip-card p { font-size: 13px; color: #444; line-height: 1.65; }
+
+  /* ── GLOSSARY ── */
+  .glossary {
+    background: #fff;
+    border-radius: 16px;
+    border: 1.5px solid var(--gray);
+    overflow: hidden;
+  }
+  .glossary-row {
+    display: flex;
+    gap: 0;
+    border-bottom: 1px solid var(--gray);
+  }
+  .glossary-row:last-child { border-bottom: none; }
+  .glossary-term {
+    width: 140px;
+    flex-shrink: 0;
+    padding: 16px 20px;
+    background: var(--ink);
+    color: #fff;
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+  }
+  .glossary-def {
+    padding: 16px 20px;
+    font-size: 14px;
+    color: #444;
+    line-height: 1.6;
+    flex: 1;
+  }
+  .glossary-def strong { color: var(--ink); }
+
+  /* footer */
+  .footer {
+    text-align: center;
+    padding: 40px 24px;
+    color: var(--gray-mid);
+    font-size: 13px;
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <p class="hero-eyebrow">チーム開発の必須スキル</p>
+  <h1>GitHub<span>、</span><br>地図で覚える。</h1>
+  <p class="hero-sub">「どこからどこへ動くか」で考えると、コマンドが自然にわかってくる。</p>
+</div>
+
+<!-- WHY -->
+<div class="section">
+  <p class="section-label">なぜ使うのか</p>
+  <h2>GitHubが必要な2つの理由</h2>
+  <div class="why-grid">
+    <div class="why-card">
+      <div class="why-icon">👥</div>
+      <h3>複数人でコードを書くため</h3>
+      <p>チームで同時に開発するとき、誰がどこを直したか管理できる。互いの作業が衝突しないように整理してくれる。</p>
+    </div>
+    <div class="why-card">
+      <div class="why-icon">📸</div>
+      <h3>履歴を残すため</h3>
+      <p>変更のたびに「写真」を撮るイメージ。壊してしまっても、過去の状態にいつでも戻せる安全網になる。</p>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- MAP -->
+<div class="map-section">
+  <p class="section-label">基本の地図</p>
+  <h2>「2つの場所」と「行き来する操作」</h2>
+  <div class="map-wrap">
+    <div class="map-diagram">
+      <div class="stations">
+        <!-- LOCAL -->
+        <div class="station">
+          <div class="station-box">
+            <div class="station-emoji">💻</div>
+            <div class="station-name">ローカル</div>
+            <div class="station-desc">自分のPC<br>ここでコードを書く</div>
+          </div>
+        </div>
+
+        <!-- TRACK -->
+        <div class="track-area">
+          <div class="track-line">
+            <div class="track-cmd">push</div>
+            <div class="track-arrow"></div>
+          </div>
+          <div class="track-line">
+            <div class="track-arrow pull"></div>
+            <div class="track-cmd pull">pull</div>
+          </div>
+        </div>
+
+        <!-- REMOTE -->
+        <div class="station">
+          <div class="station-box remote">
+            <div class="station-emoji">☁️</div>
+            <div class="station-name">リモート</div>
+            <div class="station-desc">GitHub上のサーバー<br>チームで共有する場所</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex;justify-content:space-between;margin-top:24px;padding:0 4px;">
+        <div style="font-size:12px;color:var(--gray-mid);max-width:160px;text-align:center;">
+          commit はここだけで完結<br>（ローカル内のセーブ）
+        </div>
+        <div style="font-size:12px;color:var(--gray-mid);max-width:200px;text-align:center;">
+          push → ローカルをリモートへ送る<br>pull → リモートをローカルへ受け取る
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- OPS -->
+<div class="section">
+  <p class="section-label">基本操作</p>
+  <h2>6つの操作をひとつずつ</h2>
+  <div class="ops-grid">
+
+    <!-- commit -->
+    <div class="op-card">
+      <div class="op-number">01</div>
+      <div class="op-header">
+        <div class="op-icon">💾</div>
+        <div class="op-name">コミット</div>
+      </div>
+      <div class="op-direction">
+        <span class="from">ローカル内</span>
+        <span class="arrow">↺</span>
+        <span style="font-size:12px;color:#777;">変更を記録</span>
+      </div>
+      <p class="op-desc">変更をローカルに「セーブ」する操作。写真を1枚撮るイメージ。何をしたかをメッセージで残すのが大事。</p>
+      <div class="op-code">
+        <span class="comment"># 変更内容をひとまとめにして記録</span><br>
+        git add .<br>
+        git commit -m <span style="color:#E8A87C;">"ログイン画面を修正"</span>
+      </div>
+    </div>
+
+    <!-- push -->
+    <div class="op-card">
+      <div class="op-number">02</div>
+      <div class="op-header">
+        <div class="op-icon">🚀</div>
+        <div class="op-name">プッシュ</div>
+      </div>
+      <div class="op-direction">
+        <span class="from">💻 ローカル</span>
+        <span class="arrow">→</span>
+        <span class="to">☁️ リモート</span>
+      </div>
+      <p class="op-desc">ローカルのコミットをGitHub（リモート）に送る操作。「押し出す」イメージ。チームに自分の変更を共有できる。</p>
+      <div class="op-code">
+        <span class="comment"># 自分のブランチをGitHubに送る</span><br>
+        git push origin feature/login
+      </div>
+    </div>
+
+    <!-- pull -->
+    <div class="op-card">
+      <div class="op-number">03</div>
+      <div class="op-header">
+        <div class="op-icon">📥</div>
+        <div class="op-name">プル</div>
+      </div>
+      <div class="op-direction">
+        <span class="to">☁️ リモート</span>
+        <span class="arrow" style="color:var(--green);">→</span>
+        <span class="from">💻 ローカル</span>
+      </div>
+      <p class="op-desc">リモート（GitHub）の最新状態を自分のPCに取り込む操作。「引っ張ってくる」イメージ。毎朝作業前に実行するのが基本。</p>
+      <div class="op-code">
+        <span class="comment"># チームの最新コードを自分のPCに取得</span><br>
+        git pull origin main
+      </div>
+    </div>
+
+    <!-- PR -->
+    <div class="op-card">
+      <div class="op-number">04</div>
+      <div class="op-header">
+        <div class="op-icon">🙋</div>
+        <div class="op-name">プルリクエスト</div>
+      </div>
+      <div class="op-direction">
+        <span class="from">feature/〇〇</span>
+        <span class="arrow">→</span>
+        <span class="to">main</span>
+      </div>
+      <p class="op-desc">「自分のブランチをmainに入れてもいいですか？」とチームに申請する操作。GitHub上でレビューしてもらい、OKが出たらマージ。</p>
+      <div class="op-code">
+        <span class="comment"># GitHub画面で "New Pull Request" を作成</span><br>
+        <span class="comment"># コマンドではなくウェブ上の操作</span><br>
+        <span style="color:#E8A87C;">→ レビュー → 承認 → マージ</span>
+      </div>
+    </div>
+
+    <!-- branch + merge -->
+    <div class="op-card branch-card">
+      <div class="op-number">05 / 06</div>
+      <div style="display:flex;gap:32px;flex-wrap:wrap;">
+        <div style="flex:1;min-width:220px;">
+          <div class="op-header">
+            <div class="op-icon">🌿</div>
+            <div class="op-name">ブランチ</div>
+          </div>
+          <p class="op-desc">mainから分岐した「作業用の写しのスペース」。ここで作業することでmainを壊さずに開発できる。</p>
+          <div class="op-code" style="margin-bottom:0;">
+            <span class="comment"># ブランチを作って移動</span><br>
+            git checkout -b feature/login
+          </div>
+        </div>
+        <div style="flex:1;min-width:220px;">
+          <div class="op-header">
+            <div class="op-icon">🔀</div>
+            <div class="op-name">マージ</div>
+          </div>
+          <p class="op-desc">featureブランチで作った変更をmainブランチに「合流」させる操作。PRが承認されると実行される。</p>
+          <div class="op-code" style="margin-bottom:0;">
+            <span class="comment"># featureの変更をmainに合体</span><br>
+            git merge feature/login
+          </div>
+        </div>
+      </div>
+
+      <!-- branch visual -->
+      <div class="branch-inline" style="margin-top:20px;">
+        <div style="font-size:11px;font-weight:700;color:var(--ink);margin-bottom:12px;letter-spacing:0.08em;">ブランチとマージの流れ</div>
+        <!-- main line -->
+        <div class="fork-wrap">
+          <div class="branch-track">
+            <div class="bt-dot main-c"></div>
+            <div class="bt-seg main-s"></div>
+            <div class="bt-dot main-c"></div>
+            <div class="bt-seg main-s" style="width:80px;min-width:80px;"></div>
+            <div style="width:16px;height:16px;flex-shrink:0;"></div><!-- spacer for branch -->
+            <div class="bt-seg main-s" style="width:80px;min-width:80px;"></div>
+            <div class="bt-dot merge-c"></div>
+            <div class="bt-seg merge-s"></div>
+            <div class="bt-dot main-c"></div>
+            <span class="bt-label">main</span>
+          </div>
+          <!-- feature line -->
+          <div class="branch-track" style="padding-left:80px;">
+            <div style="width:16px;height:3px;background:transparent;flex-shrink:0;"></div>
+            <div class="bt-dot feat-c"></div>
+            <div class="bt-seg feat-s"></div>
+            <div class="bt-dot feat-c"></div>
+            <div class="bt-seg feat-s"></div>
+            <div class="bt-dot feat-c"></div>
+            <span class="bt-label o">feature/login（ここで作業）</span>
+          </div>
+        </div>
+        <div style="display:flex;gap:24px;margin-top:12px;flex-wrap:wrap;">
+          <div style="display:flex;align-items:center;gap:6px;">
+            <div style="width:12px;height:12px;border-radius:50%;background:var(--ink);"></div>
+            <span style="font-size:11px;color:#555;">mainのコミット</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:6px;">
+            <div style="width:12px;height:12px;border-radius:50%;background:var(--orange);"></div>
+            <span style="font-size:11px;color:#555;">featureのコミット</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:6px;">
+            <div style="width:12px;height:12px;border-radius:50%;background:var(--green);"></div>
+            <span style="font-size:11px;color:#555;">マージポイント</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- clone -->
+    <div class="op-card" style="grid-column:span 2;">
+      <div class="op-number">+ clone</div>
+      <div class="op-header">
+        <div class="op-icon">📋</div>
+        <div class="op-name">クローン（最初の1回だけ）</div>
+      </div>
+      <div class="op-direction">
+        <span class="to">☁️ リモート</span>
+        <span class="arrow" style="color:var(--green);">→</span>
+        <span class="from">💻 ローカル（新規）</span>
+      </div>
+      <p class="op-desc">チームに参加したとき・新しいPCで始めるときなど、GitHubにあるリポジトリを自分のPCにまるごとコピーしてくる操作。プルと違い「最初の1回だけ」使う。</p>
+      <div class="op-code">
+        git clone https://github.com/チーム名/リポジトリ名.git
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- FLOW -->
+<div class="flow-section">
+  <div class="flow-inner">
+    <p class="section-label">実際の流れ</p>
+    <h2>1日の作業ルーティン</h2>
+    <div class="flow-steps">
+
+      <div class="flow-step">
+        <div class="flow-left">
+          <div class="flow-num">1</div>
+          <div class="flow-connector"></div>
+        </div>
+        <div class="flow-body">
+          <div class="flow-cmd">git pull origin main</div>
+          <div class="flow-title">最新状態を取得する</div>
+          <div class="flow-desc">作業前に必ずプル。誰かが昨日プッシュしていたら、その変更を自分のPCに取り込む。</div>
+        </div>
+      </div>
+
+      <div class="flow-step">
+        <div class="flow-left">
+          <div class="flow-num">2</div>
+          <div class="flow-connector"></div>
+        </div>
+        <div class="flow-body">
+          <div class="flow-cmd">git checkout -b feature/新機能</div>
+          <div class="flow-title">作業用ブランチを作る</div>
+          <div class="flow-desc">mainを直接触らず、作業用の分岐を作る。名前は「feature/何をするか」が慣例。</div>
+        </div>
+      </div>
+
+      <div class="flow-step">
+        <div class="flow-left">
+          <div class="flow-num">3</div>
+          <div class="flow-connector"></div>
+        </div>
+        <div class="flow-body">
+          <div class="flow-cmd">コードを書く</div>
+          <div class="flow-title">実装する</div>
+          <div class="flow-desc">区切りのいいタイミングで次のコミットへ。一気にやりすぎず、こまめにセーブするのがコツ。</div>
+        </div>
+      </div>
+
+      <div class="flow-step">
+        <div class="flow-left">
+          <div class="flow-num">4</div>
+          <div class="flow-connector"></div>
+        </div>
+        <div class="flow-body">
+          <div class="flow-cmd">git add . && git commit -m "〇〇を実装"</div>
+          <div class="flow-title">変更をコミットする</div>
+          <div class="flow-desc">ローカルにセーブ。メッセージは「何をしたか」を具体的に書く。「修正」だけだと後で意味がわからなくなる。</div>
+        </div>
+      </div>
+
+      <div class="flow-step">
+        <div class="flow-left">
+          <div class="flow-num">5</div>
+          <div class="flow-connector"></div>
+        </div>
+        <div class="flow-body">
+          <div class="flow-cmd">git push origin feature/新機能</div>
+          <div class="flow-title">GitHubに送る</div>
+          <div class="flow-desc">ローカルのコミットをリモートへ。これでチームメンバーがコードを見られる状態になる。</div>
+        </div>
+      </div>
+
+      <div class="flow-step">
+        <div class="flow-left">
+          <div class="flow-num">6</div>
+          <div class="flow-connector"></div>
+        </div>
+        <div class="flow-body">
+          <div class="flow-cmd">GitHub上でPull Requestを作成</div>
+          <div class="flow-title">レビューを依頼する</div>
+          <div class="flow-desc">「mainに入れていいですか？」と申請。チームにチェックしてもらう。</div>
+        </div>
+      </div>
+
+      <div class="flow-step">
+        <div class="flow-left">
+          <div class="flow-num">7</div>
+        </div>
+        <div class="flow-body">
+          <div class="flow-cmd">Merge Pull Request</div>
+          <div class="flow-title">マージして完了</div>
+          <div class="flow-desc">レビューOKならマージ。featureブランチの内容がmainに合流し、チーム全員のコードに反映される。</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- TIPS -->
+<div class="section">
+  <p class="section-label">よくある疑問</p>
+  <h2>つまずきやすいポイント</h2>
+  <div class="tips-grid">
+    <div class="tip-card">
+      <div class="tip-icon">⚡</div>
+      <h3>コンフリクトが起きたら？</h3>
+      <p>同じ行を別々の人が編集してマージしようとすると起きる。Gitが「どっちを使う？」とファイルに書いてくれるので、選んで保存するだけ。怖くない。</p>
+    </div>
+    <div class="tip-card">
+      <div class="tip-icon">🌿</div>
+      <h3>ブランチ名はどうする？</h3>
+      <p>「feature/ログイン機能」「fix/ボタンの色」のように「種類/内容」で付けるのが慣例。英語で書くことが多いが、チームで統一できれば何でもOK。</p>
+    </div>
+    <div class="tip-card">
+      <div class="tip-icon">🔄</div>
+      <h3>プルとクローンの違いは？</h3>
+      <p>クローンは「初回だけ」リポジトリ全体を丸ごとコピーする操作。プルは「2回目以降」の差分だけを取り込む操作。</p>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- GLOSSARY -->
+<div class="section" style="padding-top:48px;">
+  <p class="section-label">用語まとめ</p>
+  <h2>一覧で確認</h2>
+  <div class="glossary">
+    <div class="glossary-row">
+      <div class="glossary-term">ローカル</div>
+      <div class="glossary-def">自分のPC上の作業環境。コードを直接書く場所。</div>
+    </div>
+    <div class="glossary-row">
+      <div class="glossary-term">リモート</div>
+      <div class="glossary-def">GitHub上のサーバー。チーム全員が共有する場所。</div>
+    </div>
+    <div class="glossary-row">
+      <div class="glossary-term">コミット</div>
+      <div class="glossary-def">変更をローカルに記録する操作。<strong>メッセージが大事。</strong></div>
+    </div>
+    <div class="glossary-row">
+      <div class="glossary-term">プッシュ</div>
+      <div class="glossary-def">ローカル → リモートへ送る操作。</div>
+    </div>
+    <div class="glossary-row">
+      <div class="glossary-term">プル</div>
+      <div class="glossary-def">リモート → ローカルへ取り込む操作。毎朝作業前に実行。</div>
+    </div>
+    <div class="glossary-row">
+      <div class="glossary-term">クローン</div>
+      <div class="glossary-def">リモートのリポジトリをまるごとローカルにコピーする。<strong>最初の1回だけ。</strong></div>
+    </div>
+    <div class="glossary-row">
+      <div class="glossary-term">ブランチ</div>
+      <div class="glossary-def">mainから分岐した作業スペース。mainを壊さず開発できる。</div>
+    </div>
+    <div class="glossary-row">
+      <div class="glossary-term">マージ</div>
+      <div class="glossary-def">ブランチをmainに合流させる操作。PRが承認されると実行。</div>
+    </div>
+    <div class="glossary-row">
+      <div class="glossary-term">プルリクエスト</div>
+      <div class="glossary-def">「このブランチをmainに入れていいですか？」というチームへの申請。</div>
+    </div>
+    <div class="glossary-row">
+      <div class="glossary-term">コンフリクト</div>
+      <div class="glossary-def">同じ箇所を別々の人が編集してぶつかった状態。手動で解決する。</div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">Want Cooking 開発チーム向け資料 · GitHub基本操作ガイド</div>
+
+</body>
+</html>

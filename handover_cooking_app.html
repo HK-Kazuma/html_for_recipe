@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Want Cooking — ハンドオーバー資料</title>
+<style>
+  :root {
+    --green-50: #EAF3DE;
+    --green-100: #C0DD97;
+    --green-600: #3B6D11;
+    --green-800: #27500A;
+    --teal-50: #E1F5EE;
+    --teal-600: #0F6E56;
+    --teal-800: #085041;
+    --amber-50: #FAEEDA;
+    --amber-600: #854F0B;
+    --amber-800: #633806;
+    --coral-50: #FAECE7;
+    --coral-600: #993C1D;
+    --coral-800: #712B13;
+    --gray-50: #F1EFE8;
+    --gray-200: #B4B2A9;
+    --gray-600: #5F5E5A;
+    --gray-800: #444441;
+    --blue-50: #E6F1FB;
+    --blue-600: #185FA5;
+    --blue-800: #0C447C;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+    background: #f8f7f4;
+    color: #2c2c2a;
+    line-height: 1.7;
+    font-size: 15px;
+  }
+
+  /* ---- Hero ---- */
+  .hero {
+    background: #27500A;
+    color: #EAF3DE;
+    padding: 56px 48px 48px;
+  }
+  .hero-eyebrow {
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #C0DD97;
+    margin-bottom: 12px;
+  }
+  .hero h1 {
+    font-size: 40px;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 12px;
+  }
+  .hero-sub {
+    font-size: 16px;
+    color: #9FE1CB;
+    max-width: 560px;
+  }
+  .hero-badges {
+    display: flex;
+    gap: 8px;
+    margin-top: 24px;
+    flex-wrap: wrap;
+  }
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 12px;
+    border-radius: 99px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .badge-green  { background: #3B6D11; color: #C0DD97; }
+  .badge-teal   { background: #0F6E56; color: #9FE1CB; }
+  .badge-amber  { background: #633806; color: #FAC775; }
+
+  /* ---- Layout ---- */
+  .container { max-width: 900px; margin: 0 auto; padding: 0 32px; }
+
+  /* ---- Nav ---- */
+  .toc {
+    background: #fff;
+    border-bottom: 1px solid #e0ded7;
+    padding: 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .toc-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 32px;
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+  }
+  .toc a {
+    display: block;
+    padding: 14px 16px;
+    font-size: 13px;
+    color: #5F5E5A;
+    text-decoration: none;
+    white-space: nowrap;
+    border-bottom: 2px solid transparent;
+    transition: color 0.15s, border-color 0.15s;
+  }
+  .toc a:hover { color: #27500A; border-bottom-color: #27500A; }
+
+  /* ---- Sections ---- */
+  .section {
+    padding: 56px 0 0;
+  }
+  .section:last-child { padding-bottom: 80px; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 28px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #e0ded7;
+  }
+  .section-num {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #27500A;
+    color: #EAF3DE;
+    font-size: 13px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .section-header h2 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #1a1a18;
+  }
+
+  /* ---- Cards ---- */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  .card {
+    background: #fff;
+    border: 1px solid #e8e6e0;
+    border-radius: 12px;
+    padding: 20px;
+  }
+  .card-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #888780;
+    margin-bottom: 6px;
+  }
+  .card-value {
+    font-size: 15px;
+    font-weight: 600;
+    color: #2c2c2a;
+  }
+  .card-sub {
+    font-size: 12px;
+    color: #888780;
+    margin-top: 2px;
+  }
+
+  /* ---- Tables ---- */
+  .table-wrap { overflow-x: auto; margin: 16px 0; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  thead tr { background: #27500A; }
+  thead th {
+    padding: 12px 16px;
+    text-align: left;
+    color: #EAF3DE;
+    font-weight: 600;
+    font-size: 13px;
+  }
+  tbody tr { border-bottom: 1px solid #e8e6e0; }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:nth-child(even) { background: #fafaf8; }
+  tbody td { padding: 12px 16px; color: #444441; vertical-align: top; }
+  tbody td:first-child { font-weight: 600; color: #2c2c2a; }
+
+  /* ---- Flow diagram ---- */
+  .flow {
+    background: #fff;
+    border: 1px solid #e8e6e0;
+    border-radius: 12px;
+    padding: 28px;
+    margin: 16px 0;
+  }
+  .flow-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 12px 0;
+    border-bottom: 1px solid #f0ede7;
+  }
+  .flow-step:last-child { border-bottom: none; padding-bottom: 0; }
+  .flow-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .flow-icon.green  { background: #EAF3DE; }
+  .flow-icon.teal   { background: #E1F5EE; }
+  .flow-icon.amber  { background: #FAEEDA; }
+  .flow-icon.blue   { background: #E6F1FB; }
+  .flow-icon.coral  { background: #FAECE7; }
+  .flow-body h4 { font-size: 14px; font-weight: 700; color: #2c2c2a; margin-bottom: 4px; }
+  .flow-body p  { font-size: 13px; color: #5F5E5A; margin: 0; }
+  .flow-arrow {
+    text-align: center;
+    color: #C0DD97;
+    font-size: 18px;
+    line-height: 1;
+    margin: 4px 0 4px 60px;
+  }
+
+  /* ---- Mode cards ---- */
+  .mode-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 16px 0;
+  }
+  .mode-card {
+    background: #fff;
+    border: 1px solid #e8e6e0;
+    border-radius: 12px;
+    padding: 24px;
+  }
+  .mode-card.primary { border-top: 3px solid #27500A; }
+  .mode-card.secondary { border-top: 3px solid #0F6E56; }
+  .mode-card h3 {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: #2c2c2a;
+  }
+  .mode-card p { font-size: 13px; color: #5F5E5A; margin-bottom: 12px; }
+
+  /* ---- Code blocks ---- */
+  .code-block {
+    background: #1e2219;
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin: 12px 0;
+    overflow-x: auto;
+  }
+  .code-block pre {
+    font-family: 'SFMono-Regular', 'Consolas', 'Menlo', monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    color: #C0DD97;
+    white-space: pre;
+  }
+
+  /* ---- Phase timeline ---- */
+  .timeline { display: flex; flex-direction: column; gap: 0; margin: 16px 0; }
+  .phase {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 0;
+  }
+  .phase-left {
+    padding: 20px 24px 20px 0;
+    border-right: 2px solid #e0ded7;
+    text-align: right;
+    position: relative;
+  }
+  .phase-left::after {
+    content: '';
+    position: absolute;
+    right: -7px;
+    top: 28px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #27500A;
+    border: 2px solid #f8f7f4;
+  }
+  .phase-tag {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 99px;
+    font-size: 11px;
+    font-weight: 700;
+  }
+  .phase-tag.p1 { background: #EAF3DE; color: #27500A; }
+  .phase-tag.p2 { background: #E1F5EE; color: #0F6E56; }
+  .phase-tag.p3 { background: #FAEEDA; color: #633806; }
+  .phase-right {
+    padding: 20px 0 20px 24px;
+  }
+  .phase-right h3 { font-size: 15px; font-weight: 700; margin-bottom: 8px; color: #2c2c2a; }
+  .phase-items { display: flex; flex-direction: column; gap: 4px; }
+  .phase-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 13px;
+    color: #5F5E5A;
+  }
+  .phase-item::before { content: '·'; color: #27500A; font-weight: 900; flex-shrink: 0; margin-top: 1px; }
+
+  /* ---- Preference chips ---- */
+  .pref-section { margin: 16px 0; }
+  .pref-label { font-size: 12px; font-weight: 700; color: #888780; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 8px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+  .chip {
+    padding: 5px 12px;
+    border-radius: 99px;
+    font-size: 13px;
+    border: 1px solid #e0ded7;
+    background: #fff;
+    color: #444441;
+  }
+  .chip.special { background: #EAF3DE; color: #27500A; border-color: #C0DD97; font-weight: 600; }
+
+  /* ---- Warning box ---- */
+  .warning-box {
+    background: #FAEEDA;
+    border-left: 4px solid #EF9F27;
+    border-radius: 0 8px 8px 0;
+    padding: 16px 20px;
+    margin: 16px 0;
+    font-size: 14px;
+    color: #633806;
+  }
+  .warning-box strong { display: block; margin-bottom: 4px; font-weight: 700; }
+
+  /* ---- Role cards ---- */
+  .role-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+    margin: 16px 0;
+  }
+  .role-card {
+    background: #fff;
+    border: 1px solid #e8e6e0;
+    border-radius: 10px;
+    padding: 16px;
+  }
+  .role-letter {
+    display: inline-block;
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: #27500A;
+    color: #EAF3DE;
+    font-size: 13px;
+    font-weight: 700;
+    text-align: center;
+    line-height: 28px;
+    margin-bottom: 10px;
+  }
+  .role-card h4 { font-size: 14px; font-weight: 700; color: #2c2c2a; margin-bottom: 4px; }
+  .role-card p  { font-size: 12px; color: #5F5E5A; }
+
+  /* ---- Inline list ---- */
+  .check-list { list-style: none; display: flex; flex-direction: column; gap: 8px; margin: 12px 0; }
+  .check-list li {
+    display: flex; align-items: flex-start; gap: 10px;
+    font-size: 14px; color: #444441;
+  }
+  .check-list li::before {
+    content: '✓';
+    color: #27500A;
+    font-weight: 900;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  /* ---- Next steps ---- */
+  .steps { display: flex; flex-direction: column; gap: 10px; margin: 16px 0; }
+  .step {
+    display: flex; align-items: flex-start; gap: 14px;
+    background: #fff;
+    border: 1px solid #e8e6e0;
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+  .step-num {
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    background: #EAF3DE;
+    color: #27500A;
+    font-size: 12px;
+    font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .step p { font-size: 14px; color: #2c2c2a; margin: 0; }
+
+  /* ---- Responsive ---- */
+  @media (max-width: 600px) {
+    .hero { padding: 36px 20px 32px; }
+    .hero h1 { font-size: 28px; }
+    .container { padding: 0 20px; }
+    .mode-grid { grid-template-columns: 1fr; }
+    .phase { grid-template-columns: 80px 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Hero -->
+<div class="hero">
+  <p class="hero-eyebrow">ハンドオーバー資料 v1.0</p>
+  <h1>Want Cooking</h1>
+  <p class="hero-sub">冷蔵庫の食材を入力するだけで、AIが最適なレシピを提案してくれる料理提案アプリ。</p>
+  <div class="hero-badges">
+    <span class="badge badge-green">🍳 Phase 1: Webアプリ</span>
+    <span class="badge badge-teal">📱 Phase 3: iOS / Android</span>
+    <span class="badge badge-amber">👥 4人チーム</span>
+  </div>
+</div>
+
+<!-- Sticky TOC -->
+<nav class="toc">
+  <div class="toc-inner">
+    <a href="#overview">概要</a>
+    <a href="#stack">技術スタック</a>
+    <a href="#flow">処理フロー</a>
+    <a href="#modes">提案モード</a>
+    <a href="#preferences">お好み設定</a>
+    <a href="#image">画像認識</a>
+    <a href="#sub">サブ機能</a>
+    <a href="#team">開発分担</a>
+    <a href="#phases">フェーズ</a>
+    <a href="#next">次のステップ</a>
+  </div>
+</nav>
+
+<div class="container">
+
+  <!-- 1. 概要 -->
+  <section class="section" id="overview">
+    <div class="section-header">
+      <div class="section-num">1</div>
+      <h2>プロジェクト概要</h2>
+    </div>
+
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-label">解決する課題 1</div>
+        <div class="card-value">献立の悩み</div>
+        <div class="card-sub">学生・社会人・高齢者の日常的な課題</div>
+      </div>
+      <div class="card">
+        <div class="card-label">解決する課題 2</div>
+        <div class="card-value">フードロス削減</div>
+        <div class="card-sub">食材を使い切れずに廃棄してしまう問題</div>
+      </div>
+      <div class="card">
+        <div class="card-label">開発体制</div>
+        <div class="card-value">4人チーム</div>
+        <div class="card-sub">GitHub / Figma を活用した分散開発</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. 技術スタック -->
+  <section class="section" id="stack">
+    <div class="section-header">
+      <div class="section-num">2</div>
+      <h2>技術スタック</h2>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>レイヤー</th>
+            <th>技術</th>
+            <th>備考</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>フロントエンド</td><td>Next.js + React + TypeScript</td><td>まずWebアプリとして開発</td></tr>
+          <tr><td>バックエンド</td><td>FastAPI（Python）</td><td></td></tr>
+          <tr><td>AI（開発中）</td><td>Gemini API</td><td>無料枠を活用</td></tr>
+          <tr><td>AI（本番）</td><td>Claude API</td><td></td></tr>
+          <tr><td>レスポンス検証</td><td>Pydantic</td><td>型の安定性はPydanticで担保</td></tr>
+          <tr><td>画像認識</td><td>Gemini / Claude マルチモーダル</td><td>食材写真→食材名＋量をJSON返却</td></tr>
+          <tr><td>データベース</td><td>Supabase / PostgreSQL</td><td>Google認証連携</td></tr>
+          <tr><td>スマホアプリ化</td><td>Capacitor.js</td><td>Web完成後にiOS / Android対応</td></tr>
+          <tr><td>UIデザイン</td><td>Figma + v0.dev</td><td>画面デザイン・ワイヤーフレーム</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 3. 処理フロー -->
+  <section class="section" id="flow">
+    <div class="section-header">
+      <div class="section-num">3</div>
+      <h2>処理フロー</h2>
+    </div>
+    <div class="flow">
+      <div class="flow-step">
+        <div class="flow-icon green">👤</div>
+        <div class="flow-body">
+          <h4>ユーザー入力</h4>
+          <p>食材テキスト入力 または 写真撮影</p>
+        </div>
+      </div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-step">
+        <div class="flow-icon teal">🖥️</div>
+        <div class="flow-body">
+          <h4>フロントエンド（Next.js）</h4>
+          <p>POST /api/suggest-recipes へリクエスト送信</p>
+        </div>
+      </div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-step">
+        <div class="flow-icon amber">⚙️</div>
+        <div class="flow-body">
+          <h4>バックエンド（FastAPI）</h4>
+          <p>画像あり → マルチモーダルAPIで食材特定<br>食材リスト + モード + お好み設定 → AIプロンプト生成<br>薬が登録されている場合 → 相互作用チェックも実行</p>
+        </div>
+      </div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-step">
+        <div class="flow-icon blue">🤖</div>
+        <div class="flow-body">
+          <h4>AI API（Gemini / Claude）</h4>
+          <p>レシピJSON返却（薬との注意事項があれば付記）</p>
+        </div>
+      </div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-step">
+        <div class="flow-icon green">📱</div>
+        <div class="flow-body">
+          <h4>フロントエンド 表示</h4>
+          <p>レシピ一覧・詳細を表示（Pydanticで型検証済み）</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. 提案モード -->
+  <section class="section" id="modes">
+    <div class="section-header">
+      <div class="section-num">4</div>
+      <h2>提案モード</h2>
+    </div>
+    <div class="mode-grid">
+      <div class="mode-card primary">
+        <h3>🔒 モード1: 手持ち食材のみ</h3>
+        <p>入力した食材だけで作れる料理を提案。追加の買い物なしで作れるレシピのみ。</p>
+        <div class="code-block"><pre>【制約】提案するレシピは、以下の食材と
+一般的な調味料（塩、こしょう、砂糖、
+醤油、みりん、酒、油）のみで作れるもの
+に限定してください。</pre></div>
+      </div>
+      <div class="mode-card secondary">
+        <h3>🌟 モード2: おまかせ</h3>
+        <p>手持ち食材を含みつつ、追加食材も使ったレシピを提案。新しい料理との出会いを提供。</p>
+        <div class="code-block"><pre>【制約】以下の食材を必ず使用してください。
+それ以外に必要な食材がある場合は
+「追加で必要な食材」として明記してください。</pre></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. お好み設定 -->
+  <section class="section" id="preferences">
+    <div class="section-header">
+      <div class="section-num">5</div>
+      <h2>お好み設定機能</h2>
+    </div>
+    <p style="font-size:14px; color:#5F5E5A; margin-bottom:20px;">全カテゴリに「おまかせ」を用意。こだわりたい人だけ設定する設計で、間口を広く保つ。「おまかせ」が選ばれた項目はプロンプトから省略。</p>
+
+    <div class="pref-section">
+      <div class="pref-label">味の方向性（単一選択）</div>
+      <div class="chips">
+        <span class="chip">しょうゆ系</span>
+        <span class="chip">味噌系</span>
+        <span class="chip">塩系</span>
+        <span class="chip">ソース系</span>
+        <span class="chip">ケチャップ系</span>
+        <span class="chip">ピリ辛</span>
+        <span class="chip">酸味系</span>
+        <span class="chip">クリーム系</span>
+        <span class="chip special">おまかせ</span>
+      </div>
+
+      <div class="pref-label">調理法（単一選択）</div>
+      <div class="chips">
+        <span class="chip">焼く</span>
+        <span class="chip">炒める</span>
+        <span class="chip">煮る</span>
+        <span class="chip">蒸す</span>
+        <span class="chip">揚げる</span>
+        <span class="chip">生・和える</span>
+        <span class="chip special">おまかせ</span>
+      </div>
+
+      <div class="pref-label">ジャンル（単一選択）</div>
+      <div class="chips">
+        <span class="chip">和食</span>
+        <span class="chip">洋食</span>
+        <span class="chip">中華</span>
+        <span class="chip">韓国</span>
+        <span class="chip">エスニック</span>
+        <span class="chip special">おまかせ</span>
+      </div>
+
+      <div class="pref-label">ボリューム感（単一選択）</div>
+      <div class="chips">
+        <span class="chip">がっつり</span>
+        <span class="chip">普通</span>
+        <span class="chip">軽め</span>
+      </div>
+    </div>
+
+    <div style="margin-top:8px;">
+      <p style="font-size:13px; font-weight:700; color:#2c2c2a; margin-bottom:8px;">プロンプト例</p>
+      <div class="code-block"><pre>あなたは料理提案AIです。以下の条件でレシピを3つ提案してください。
+
+【食材】鶏もも肉(300g)、玉ねぎ(1個)、じゃがいも(2個)
+【モード】手持ち食材のみ
+【味の方向性】ピリ辛
+【調理法】炒める
+【ジャンル】韓国
+【ボリューム】がっつり
+
+各レシピについて以下のJSON形式で返してください：
+- recipeName: 料理名
+- cookingTime: 調理時間（分）
+- difficulty: 難易度（簡単/普通/本格的）
+- ingredients: 材料リスト
+- steps: 手順（配列）
+- point: 美味しく作るコツ（1文）</pre></div>
+    </div>
+  </section>
+
+  <!-- 6. 画像認識 -->
+  <section class="section" id="image">
+    <div class="section-header">
+      <div class="section-num">6</div>
+      <h2>画像認識の精度対策</h2>
+    </div>
+    <p style="font-size:14px; color:#5F5E5A; margin-bottom:20px;">「認識精度を100%に近づける」よりも「70%の精度でも快適に使えるUX設計」に注力する。</p>
+
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-label">対策 1</div>
+        <div class="card-value" style="font-size:14px; margin-bottom:8px;">プロンプト側のチューニング</div>
+        <p style="font-size:13px; color:#5F5E5A;">JSON形式 + confidenceスコア付きで返させる。確信度が低い食材のみユーザーに確認を求める。</p>
+      </div>
+      <div class="card">
+        <div class="card-label">対策 2</div>
+        <div class="card-value" style="font-size:14px; margin-bottom:8px;">撮影条件をUXで制御</div>
+        <p style="font-size:13px; color:#5F5E5A;">カメラ起動時にガイドを表示。1食材ずつ撮影モードや枠・オーバーレイで撮影範囲をガイド。</p>
+      </div>
+      <div class="card" style="border-left: 3px solid #27500A;">
+        <div class="card-label">対策 3（最重要）</div>
+        <div class="card-value" style="font-size:14px; margin-bottom:8px;">UXで精度の低さを吸収</div>
+        <p style="font-size:13px; color:#5F5E5A;">タグ形式で表示・タップで編集可能。「これも入ってた」で手動追加。よく使う食材のサジェスト機能。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. サブ機能 -->
+  <section class="section" id="sub">
+    <div class="section-header">
+      <div class="section-num">7</div>
+      <h2>サブ機能: 薬と食材の相互作用チェック</h2>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>薬の例</th><th>注意が必要な食材</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>ワルファリン</td><td>納豆・ブロッコリーなどビタミンKの多い食材</td></tr>
+          <tr><td>降圧剤</td><td>グレープフルーツ（相互作用あり）</td></tr>
+          <tr><td>MAO阻害薬</td><td>チーズ・赤ワインなどチラミンの多い食品</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="code-block" style="margin-top:16px;"><pre>【服用中の薬】ワルファリン
+
+上記の薬と相性の悪い食材がレシピに含まれる場合は、
+以下の形式で警告を追加してください：
+- warningIngredient: 注意が必要な食材名
+- warningReason: 注意が必要な理由（1文）</pre></div>
+
+    <div class="warning-box">
+      <strong>⚠️ 免責事項（必須表示）</strong>
+      「AIによる参考情報であり、医療上の判断は必ず医師・薬剤師にご相談ください」と明示する。この機能はサブ機能として位置づけ、メインのレシピ提案機能の完成を優先する。
+    </div>
+  </section>
+
+  <!-- 8. 開発分担 -->
+  <section class="section" id="team">
+    <div class="section-header">
+      <div class="section-num">8</div>
+      <h2>開発分担（4人体制）</h2>
+    </div>
+    <div class="role-grid">
+      <div class="role-card">
+        <div class="role-letter">A</div>
+        <h4>フロントUI</h4>
+        <p>画面レイアウト・コンポーネント + お好み設定画面<br>Next.js / React でページ実装、Figmaデザインの実装</p>
+      </div>
+      <div class="role-card">
+        <div class="role-letter">B</div>
+        <h4>カメラ・画像処理</h4>
+        <p>写真撮影 → API送信 → 結果表示<br>カメラAPI + マルチモーダルAPI連携</p>
+      </div>
+      <div class="role-card">
+        <div class="role-letter">C</div>
+        <h4>バックエンドAPI</h4>
+        <p>FastAPIでエンドポイント設計<br>食材 + モード + 設定パラメータ受け取り → AI呼び出し → レシピ返却</p>
+      </div>
+      <div class="role-card">
+        <div class="role-letter">D</div>
+        <h4>AI・プロンプト設計</h4>
+        <p>レシピ提案ロジック + 条件付きプロンプトテンプレート<br>レスポンスのパース・精度改善・薬チェック機能</p>
+      </div>
+    </div>
+
+    <div style="margin-top:20px; background:#fff; border:1px solid #e8e6e0; border-radius:10px; padding:20px;">
+      <p style="font-size:13px; font-weight:700; color:#2c2c2a; margin-bottom:10px;">GitHub 運用ルール</p>
+      <ul class="check-list">
+        <li><code style="font-size:12px; background:#f0ede7; padding:1px 6px; border-radius:4px;">main</code> ブランチは常にデプロイ可能な状態を維持</li>
+        <li>各自が <code style="font-size:12px; background:#f0ede7; padding:1px 6px; border-radius:4px;">feature/○○</code> ブランチで作業</li>
+        <li>Pull Request でレビュー → マージ</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 9. フェーズ -->
+  <section class="section" id="phases">
+    <div class="section-header">
+      <div class="section-num">9</div>
+      <h2>開発フェーズ</h2>
+    </div>
+    <div class="timeline">
+      <div class="phase">
+        <div class="phase-left"><span class="phase-tag p1">Phase 1</span></div>
+        <div class="phase-right">
+          <h3>Webアプリ開発（メイン機能）</h3>
+          <div class="phase-items">
+            <div class="phase-item">Figmaでの画面デザイン完成</div>
+            <div class="phase-item">食材入力（テキスト + 画像認識）</div>
+            <div class="phase-item">2つの提案モード実装</div>
+            <div class="phase-item">お好み設定 + AIレシピ生成</div>
+            <div class="phase-item">レシピ一覧・詳細表示</div>
+          </div>
+        </div>
+      </div>
+      <div class="phase">
+        <div class="phase-left"><span class="phase-tag p2">Phase 2</span></div>
+        <div class="phase-right">
+          <h3>サブ機能追加</h3>
+          <div class="phase-items">
+            <div class="phase-item">薬管理画面の実装</div>
+            <div class="phase-item">薬と食材の相互作用チェック機能</div>
+          </div>
+        </div>
+      </div>
+      <div class="phase">
+        <div class="phase-left"><span class="phase-tag p3">Phase 3</span></div>
+        <div class="phase-right">
+          <h3>スマホアプリ化</h3>
+          <div class="phase-items">
+            <div class="phase-item">Capacitor.js の導入</div>
+            <div class="phase-item">iOS / Android ビルドとテスト</div>
+            <div class="phase-item">ネイティブ機能（カメラ等）のCapacitorプラグイン対応</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10. 次のステップ -->
+  <section class="section" id="next">
+    <div class="section-header">
+      <div class="section-num">10</div>
+      <h2>次のステップ</h2>
+    </div>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><p>Figma で画面デザイン・ワイヤーフレーム作成</p></div>
+      <div class="step"><div class="step-num">2</div><p>APIのエンドポイント仕様書作成</p></div>
+      <div class="step"><div class="step-num">3</div><p>開発環境のセットアップ（GitHub リポジトリ作成、プロジェクト構成の決定）</p></div>
+      <div class="step"><div class="step-num">4</div><p>各担当の初期タスク定義</p></div>
+    </div>
+  </section>
+
+</div>
+
+<!-- Footer -->
+<div style="background:#27500A; margin-top:64px; padding:24px 48px; text-align:center;">
+  <p style="color:#9FE1CB; font-size:13px;">Want Cooking — ハンドオーバー資料 v1.0</p>
+</div>
+
+</body>
+</html>

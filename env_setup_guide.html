@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>開発環境ガイド — Want Cooking</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --orange:   #FF6B35;
+    --green:    #2D6A4F;
+    --cream:    #F7F3EE;
+    --navy:     #1A1A2E;
+    --gray:     #6B7280;
+    --light:    #FFFFFF;
+    --border:   #E5DDD5;
+    --code-bg:  #1E2435;
+  }
+
+  body {
+    font-family: 'Noto Sans JP', sans-serif;
+    background: var(--cream);
+    color: var(--navy);
+    line-height: 1.6;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--navy);
+    color: white;
+    padding: 48px 32px 40px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 220px; height: 220px;
+    border-radius: 50%;
+    background: var(--orange);
+    opacity: .15;
+  }
+  header::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; left: -40px;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: var(--green);
+    opacity: .2;
+  }
+  .header-badge {
+    display: inline-block;
+    background: var(--orange);
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .12em;
+    padding: 4px 14px;
+    border-radius: 20px;
+    margin-bottom: 16px;
+    text-transform: uppercase;
+  }
+  header h1 {
+    font-size: clamp(24px, 5vw, 40px);
+    font-weight: 900;
+    line-height: 1.2;
+    margin-bottom: 10px;
+  }
+  header p {
+    color: #9CA3AF;
+    font-size: 14px;
+  }
+
+  /* ── LAYOUT ── */
+  main {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 48px 24px 80px;
+    display: flex;
+    flex-direction: column;
+    gap: 56px;
+  }
+
+  /* ── SECTION HEADER ── */
+  .section-label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  .section-number {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: var(--orange);
+    color: white;
+    font-weight: 900;
+    font-size: 15px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .section-title {
+    font-size: 20px;
+    font-weight: 700;
+  }
+  .section-sub {
+    font-size: 13px;
+    color: var(--gray);
+    margin-top: 2px;
+  }
+
+  /* ── RECIPE CARD ── */
+  .card {
+    background: white;
+    border-radius: 16px;
+    padding: 28px;
+    border: 1px solid var(--border);
+    box-shadow: 0 2px 8px rgba(0,0,0,.04);
+    animation: fadeUp .5s ease both;
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .card:nth-child(2) { animation-delay: .08s; }
+  .card:nth-child(3) { animation-delay: .16s; }
+
+  /* ── CONCEPT: 3-type row ── */
+  .type-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: 8px;
+  }
+  .type-card {
+    background: var(--cream);
+    border-radius: 12px;
+    padding: 20px 16px;
+    text-align: center;
+    border: 1.5px solid var(--border);
+  }
+  .type-icon {
+    font-size: 28px;
+    margin-bottom: 8px;
+  }
+  .type-name {
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    color: var(--navy);
+  }
+  .type-desc {
+    font-size: 12px;
+    color: var(--gray);
+    line-height: 1.5;
+  }
+  .type-examples {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .type-examples span {
+    font-size: 11px;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 3px 8px;
+    color: var(--navy);
+  }
+
+  /* ── ENV VAR ── */
+  .env-flow {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 8px;
+  }
+  .env-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    background: var(--cream);
+    border-radius: 10px;
+    padding: 16px;
+  }
+  .env-step-num {
+    width: 26px; height: 26px;
+    background: var(--green);
+    color: white;
+    border-radius: 50%;
+    font-size: 12px;
+    font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .env-step-body h4 {
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .env-step-body p {
+    font-size: 12px;
+    color: var(--gray);
+    line-height: 1.5;
+  }
+
+  .code-block {
+    background: var(--code-bg);
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-top: 12px;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    color: #E2E8F0;
+    line-height: 1.7;
+    overflow-x: auto;
+  }
+  .code-comment { color: #6B7280; }
+  .code-key { color: #7DD3FC; }
+  .code-val { color: #86EFAC; }
+
+  .warning-box {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    background: #FEF3C7;
+    border: 1.5px solid #F59E0B;
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-top: 16px;
+  }
+  .warning-box .icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+  .warning-box p { font-size: 12px; color: #92400E; line-height: 1.6; }
+  .warning-box strong { font-weight: 700; }
+
+  .tip-box {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    background: #EFF6FF;
+    border: 1.5px solid #93C5FD;
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-top: 12px;
+  }
+  .tip-box .icon { font-size: 18px; flex-shrink: 0; }
+  .tip-box p { font-size: 12px; color: #1E40AF; line-height: 1.6; }
+
+  /* ── INSTALL TABLE ── */
+  .install-section {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .install-group {
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1.5px solid var(--border);
+  }
+  .install-group-header {
+    padding: 12px 20px;
+    font-size: 13px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    letter-spacing: .02em;
+  }
+  .install-group-header.all    { background: #1A1A2E; color: white; }
+  .install-group-header.front  { background: #FF6B35; color: white; }
+  .install-group-header.back   { background: #2D6A4F; color: white; }
+  .install-item {
+    display: grid;
+    grid-template-columns: 1fr 1fr auto;
+    align-items: center;
+    padding: 13px 20px;
+    border-bottom: 1px solid var(--border);
+    gap: 12px;
+    background: white;
+  }
+  .install-item:last-child { border-bottom: none; }
+  .install-name {
+    font-size: 14px;
+    font-weight: 700;
+  }
+  .install-purpose {
+    font-size: 12px;
+    color: var(--gray);
+  }
+  .install-cmd {
+    font-family: 'Courier New', monospace;
+    font-size: 11px;
+    background: var(--code-bg);
+    color: #86EFAC;
+    padding: 4px 10px;
+    border-radius: 6px;
+    white-space: nowrap;
+  }
+  .install-cmd.gui {
+    background: #F3F4F6;
+    color: var(--navy);
+  }
+
+  .analogy-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 8px;
+  }
+  .analogy-card {
+    background: var(--cream);
+    border-radius: 10px;
+    padding: 14px 16px;
+    border: 1px solid var(--border);
+  }
+  .analogy-tech {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--orange);
+    margin-bottom: 4px;
+  }
+  .analogy-arrow {
+    font-size: 11px;
+    color: var(--gray);
+    margin-bottom: 2px;
+  }
+  .analogy-real {
+    font-size: 13px;
+    color: var(--navy);
+  }
+
+  /* ── VENV EXPLAINER ── */
+  .venv-visual {
+    display: flex;
+    gap: 16px;
+    margin-top: 12px;
+    align-items: stretch;
+  }
+  .venv-box {
+    flex: 1;
+    border-radius: 12px;
+    padding: 16px;
+    text-align: center;
+    font-size: 12px;
+  }
+  .venv-box.bad {
+    background: #FEF2F2;
+    border: 1.5px dashed #FCA5A5;
+    color: #991B1B;
+  }
+  .venv-box.good {
+    background: #F0FDF4;
+    border: 1.5px solid #86EFAC;
+    color: #14532D;
+  }
+  .venv-box .emoji { font-size: 26px; margin-bottom: 8px; }
+  .venv-box h4 { font-size: 13px; font-weight: 700; margin-bottom: 6px; }
+  .venv-vs {
+    display: flex; align-items: center;
+    font-weight: 700; color: var(--gray); font-size: 14px;
+  }
+
+  @media (max-width: 600px) {
+    .type-row { grid-template-columns: 1fr; }
+    .install-item { grid-template-columns: 1fr; gap: 6px; }
+    .install-cmd { width: fit-content; }
+    .analogy-grid { grid-template-columns: 1fr; }
+    .venv-visual { flex-direction: column; }
+    .venv-vs { justify-content: center; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-badge">Want Cooking 開発チーム向け</div>
+  <h1>開発環境ガイド</h1>
+  <p>コードを書く前に知っておくべき3つのこと</p>
+</header>
+
+<main>
+
+  <!-- ① 環境構築とは -->
+  <section>
+    <div class="section-label">
+      <div class="section-number">1</div>
+      <div>
+        <div class="section-title">環境構築とは？</div>
+        <div class="section-sub">コードを動かすための「道具」をPCに入れること</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="type-row">
+        <div class="type-card">
+          <div class="type-icon">🏗️</div>
+          <div class="type-name">① 実行環境を入れる</div>
+          <div class="type-desc">「この言語を動かせる」ようにする土台</div>
+          <div class="type-examples">
+            <span>Python</span>
+            <span>Node.js</span>
+          </div>
+        </div>
+        <div class="type-card">
+          <div class="type-icon">📦</div>
+          <div class="type-name">② ライブラリを追加する</div>
+          <div class="type-desc">便利な部品を後から追加する</div>
+          <div class="type-examples">
+            <span>pip install ○○</span>
+            <span>npm install ○○</span>
+          </div>
+        </div>
+        <div class="type-card">
+          <div class="type-icon">⚙️</div>
+          <div class="type-name">③ 設定をする</div>
+          <div class="type-desc">アプリが使う値を教えてあげる</div>
+          <div class="type-examples">
+            <span>.env ファイル</span>
+            <span>export コマンド</span>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top: 24px;">
+        <p style="font-size:13px; color:var(--gray); margin-bottom:12px;">📌 例え話で理解する</p>
+        <div class="analogy-grid">
+          <div class="analogy-card">
+            <div class="analogy-tech">Python / Node.js</div>
+            <div class="analogy-arrow">↓ 例えると</div>
+            <div class="analogy-real">🍳 コンロ・オーブンを設置する</div>
+          </div>
+          <div class="analogy-card">
+            <div class="analogy-tech">pip / npm でライブラリ追加</div>
+            <div class="analogy-arrow">↓ 例えると</div>
+            <div class="analogy-real">🔪 包丁・フライパンを揃える</div>
+          </div>
+          <div class="analogy-card">
+            <div class="analogy-tech">FastAPI / Next.js</div>
+            <div class="analogy-arrow">↓ 例えると</div>
+            <div class="analogy-real">📋 レシピ本（書き方の型）</div>
+          </div>
+          <div class="analogy-card">
+            <div class="analogy-tech">.env（環境変数）</div>
+            <div class="analogy-arrow">↓ 例えると</div>
+            <div class="analogy-real">🔑 厨房の鍵と入室コード</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tip-box" style="margin-top:20px;">
+        <span class="icon">💡</span>
+        <p>「なんでこんなにコマンドが多いの？」 → <strong>①②③の3種類が混在しているから</strong>。どれをやっているか意識すると混乱しにくい。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ② 環境変数 -->
+  <section>
+    <div class="section-label">
+      <div class="section-number">2</div>
+      <div>
+        <div class="section-title">環境変数（.env）とは？</div>
+        <div class="section-sub">APIキーなど重要な情報を安全に管理する仕組み</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="env-flow">
+        <div class="env-step">
+          <div class="env-step-num">1</div>
+          <div class="env-step-body">
+            <h4>📄 .env ファイルに変数を書く</h4>
+            <p>APIキーなどを「変数名 = 値」の形で記録しておく。</p>
+          </div>
+        </div>
+        <div class="env-step">
+          <div class="env-step-num">2</div>
+          <div class="env-step-body">
+            <h4>📞 他のファイルから変数名で呼び出す</h4>
+            <p>長いキーを直接書かなくても、変数名だけで使える。コードがスッキリする。</p>
+          </div>
+        </div>
+        <div class="env-step">
+          <div class="env-step-num">3</div>
+          <div class="env-step-body">
+            <h4>🙈 GitHubには絶対に上げない</h4>
+            <p>.gitignore に追加してリモートに反映されないよう隠す。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="code-block">
+        <span class="code-comment"># .env ファイルの中身（イメージ）</span><br>
+        <span class="code-key">GEMINI_API_KEY</span>=AIzaSyXXXXXXXXXXXXXXXX<br>
+        <span class="code-key">SUPABASE_URL</span>=https://xxxx.supabase.co<br>
+        <span class="code-key">SUPABASE_KEY</span>=eyJhbGciOiJXXXXXXXX<br>
+        <br>
+        <span class="code-comment"># 他のファイルでの呼び出し（Python の例）</span><br>
+        <span class="code-val">api_key</span> = os.environ[<span class="code-val">"GEMINI_API_KEY"</span>]
+      </div>
+
+      <div class="warning-box">
+        <span class="icon">⚠️</span>
+        <p><strong>GitHubに上げると何が起きる？</strong><br>
+        リポジトリが公開設定だと世界中に見られる。APIキーは「そのサービスへのパスワード」なので、悪用されると<strong>自分のアカウントで勝手に使われて課金される</strong>。</p>
+      </div>
+
+      <div class="tip-box">
+        <span class="icon">📋</span>
+        <p><strong>チーム開発のコツ：</strong> .env 本体は隠しつつ、<strong>.env.example</strong>（中身はダミー値）をGitHubに上げておく。メンバーがどの変数が必要かわかるテンプレートになる。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ③ インストール一覧 -->
+  <section>
+    <div class="section-label">
+      <div class="section-number">3</div>
+      <div>
+        <div class="section-title">Want Cooking でインストールするもの</div>
+        <div class="section-sub">担当別に必要なものが違う</div>
+      </div>
+    </div>
+
+    <div class="install-section">
+
+      <!-- 全員 -->
+      <div class="install-group">
+        <div class="install-group-header all">👥 全員が必要</div>
+        <div class="install-item">
+          <div>
+            <div class="install-name">Node.js</div>
+            <div class="install-purpose">Next.jsを動かす実行環境</div>
+          </div>
+          <div class="install-purpose">フロントエンド全体の土台</div>
+          <span class="install-cmd gui">インストーラーから</span>
+        </div>
+        <div class="install-item">
+          <div>
+            <div class="install-name">Git</div>
+            <div class="install-purpose">GitHubと連携するツール</div>
+          </div>
+          <div class="install-purpose">バージョン管理・チーム共有</div>
+          <span class="install-cmd gui">インストーラーから</span>
+        </div>
+      </div>
+
+      <!-- フロント -->
+      <div class="install-group">
+        <div class="install-group-header front">🖥️ フロントエンド担当（A・B）</div>
+        <div class="install-item">
+          <div>
+            <div class="install-name">Next.js + React + TypeScript</div>
+            <div class="install-purpose">画面を作るフレームワーク一式</div>
+          </div>
+          <div class="install-purpose">1コマンドでまとめてセットアップ</div>
+          <span class="install-cmd">npx create-next-app</span>
+        </div>
+        <div class="install-item">
+          <div>
+            <div class="install-name">各種 npm パッケージ</div>
+            <div class="install-purpose">UIコンポーネントなど追加部品</div>
+          </div>
+          <div class="install-purpose">必要に応じて追加</div>
+          <span class="install-cmd">npm install ○○</span>
+        </div>
+      </div>
+
+      <!-- バックエンド -->
+      <div class="install-group">
+        <div class="install-group-header back">⚙️ バックエンド担当（C・D）</div>
+        <div class="install-item">
+          <div>
+            <div class="install-name">Python</div>
+            <div class="install-purpose">FastAPIを動かす実行環境</div>
+          </div>
+          <div class="install-purpose">バックエンド全体の土台</div>
+          <span class="install-cmd gui">インストーラーから</span>
+        </div>
+        <div class="install-item">
+          <div>
+            <div class="install-name">FastAPI</div>
+            <div class="install-purpose">バックエンドのフレームワーク</div>
+          </div>
+          <div class="install-purpose">APIのエンドポイントを作る枠組み</div>
+          <span class="install-cmd">pip install fastapi</span>
+        </div>
+        <div class="install-item">
+          <div>
+            <div class="install-name">uvicorn</div>
+            <div class="install-purpose">FastAPIを起動するサーバー</div>
+          </div>
+          <div class="install-purpose">FastAPIとセットで使う</div>
+          <span class="install-cmd">pip install uvicorn</span>
+        </div>
+        <div class="install-item">
+          <div>
+            <div class="install-name">Pydantic</div>
+            <div class="install-purpose">AIレスポンスを検証する部品</div>
+          </div>
+          <div class="install-purpose">型の安定性を担保する</div>
+          <span class="install-cmd">pip install pydantic</span>
+        </div>
+        <div class="install-item">
+          <div>
+            <div class="install-name">google-generativeai</div>
+            <div class="install-purpose">Gemini API（開発用）を呼ぶ</div>
+          </div>
+          <div class="install-purpose">開発フェーズで使用</div>
+          <span class="install-cmd">pip install google-generativeai</span>
+        </div>
+        <div class="install-item">
+          <div>
+            <div class="install-name">anthropic</div>
+            <div class="install-purpose">Claude API（本番用）を呼ぶ</div>
+          </div>
+          <div class="install-purpose">本番フェーズで使用</div>
+          <span class="install-cmd">pip install anthropic</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- venv -->
+    <div class="card" style="margin-top: 20px;">
+      <p style="font-size:14px; font-weight:700; margin-bottom:12px;">🧪 Python の仮想環境（venv）について</p>
+      <p style="font-size:13px; color:var(--gray); margin-bottom:16px;">プロジェクトごとに「専用の部屋」を作ってインストールする慣習がある。やらないと別プロジェクトのライブラリと混ざって不具合が起きる。</p>
+      <div class="venv-visual">
+        <div class="venv-box bad">
+          <div class="emoji">😵</div>
+          <h4>venv なし</h4>
+          <p>全プロジェクトのライブラリがPCに混在→バージョン衝突・謎のエラー</p>
+        </div>
+        <div class="venv-vs">VS</div>
+        <div class="venv-box good">
+          <div class="emoji">😌</div>
+          <h4>venv あり</h4>
+          <p>プロジェクトごとに独立した部屋→クリーンな状態を維持できる</p>
+        </div>
+      </div>
+      <div class="code-block" style="margin-top:16px;">
+        <span class="code-comment"># 仮想環境を作成して入る（バックエンド担当向け）</span><br>
+        python -m venv venv<br>
+        source venv/bin/activate &nbsp;<span class="code-comment"># Mac / Linux</span><br>
+        venv\Scripts\activate &nbsp;&nbsp;&nbsp;<span class="code-comment"># Windows</span>
+      </div>
+    </div>
+
+  </section>
+
+</main>
+
+</body>
+</html>
